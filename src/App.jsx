@@ -6,23 +6,24 @@ import ModalImg from "./components/Modal/ModalImg";
 import "./App.scss";
 
 const App = () => {
-  const [modalImgIsOpen, setModalImgIsOpen] = useState(false);
-  const [modal2IsOpen, setModal2IsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const openModalImg = () => {
-    setModalImgIsOpen(true);
+  const [selectedModal, setSelectedModal] = useState(null);
+
+  const openModal = (modal) => {
+    setSelectedModal(modal);
+    setModalIsOpen(true);
   };
 
-  const openModal2 = () => {
-    setModal2IsOpen(true);
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedModal(null);
   };
 
-  const closeModalImg = () => {
-    setModalImgIsOpen(false);
-  };
-
-  const closeModal2 = () => {
-    setModal2IsOpen(false);
+  const handleOutsideClick = (e) => {
+    if (modalIsOpen && e.target === e.currentTarget) {
+      closeModal();
+    }
   };
 
   return (
@@ -30,58 +31,61 @@ const App = () => {
       <Button
         backgroundColor="blue"
         text="Open the first modal"
-        onClick={openModalImg}
+        onClick={() => openModal("ModalImg")}
       />
       <Button
         backgroundColor="green"
         text="Open second modal"
-        onClick={openModal2}
+        onClick={() => openModal("Modal")}
       />
 
-      {modalImgIsOpen && (
-        <ModalImg
-          header="Modal 1"
-          closeButton={true}
-          text="
-          The first modal window"
-          onClose={closeModalImg}
-          actions={
-            <div>
-              <Button
-                backgroundColor="darkorchid"
-                color="white"
-                // borderRadius="5px"
-                text="NO, CLOSE"
-                onClick={closeModalImg}
-              />
-              <button className="deleteButton" onClick={closeModalImg}>
-                YES, DELETE
-              </button>
-            </div>
-          }
-        />
+      {modalIsOpen && selectedModal === "ModalImg" && (
+        <div className="wrapper" onClick={handleOutsideClick}>
+          <ModalImg
         
+            header="Modal 1"
+            closeButton={true}
+            text="
+          The first modal window"
+            onClose={closeModal}
+            actions={
+              <div className="footerButton">
+                <Button
+                  backgroundColor="darkorchid"
+                  color="white"
+                  text="NO, CLOSE"
+                  onClick={closeModal}
+                />
+                <button className="deleteButton" onClick={closeModal}>
+                  YES, DELETE
+                </button>
+              </div>
+            }
+          />
+        </div>
       )}
 
-      {modal2IsOpen && (
-        <Modal
-          header="Modal 2"
-          closeButton={true}
-          text="Second modal window"
-          onClose={closeModal2}
-          actions={
-            <Button
-              onClick={closeModal2}
-              backgroundColor="darkorchid"
-              color="white"
-              borderRadius="5px"
-              text="ADO TO FAVORITE"
-            />
-          }
-        />
+      {modalIsOpen && selectedModal === "Modal" && (
+        <div className="wrapper" onClick={handleOutsideClick}>
+          <Modal
+        
+            header="Modal 2"
+            closeButton={true}
+            text="Second modal window"
+            onClose={closeModal}
+            actions={
+              <Button
+                onClick={closeModal}
+                backgroundColor="darkorchid"
+                text="ADO TO FAVORITE"
+              />
+            }
+          />
+        </div>
       )}
     </div>
   );
+  
 };
 
 export default App;

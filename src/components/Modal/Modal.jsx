@@ -10,10 +10,9 @@ const Modal = (props) => {
           <span onClick={props.onClose} className="modal-close">
             &times;
           </span>
-        )} 
+        )}
 
         <div className="modal-header">
-         
           <h2>{header}</h2>
         </div>
         <div className="modal-body">{text}</div>
